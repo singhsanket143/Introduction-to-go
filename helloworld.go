@@ -2,30 +2,91 @@ package main
 
 import "fmt"
 
+type SellableProduct interface {
+	buy()
+	getDiscount() int
+}
+
+type Product struct {
+	name    string
+	price   int
+	company string
+}
+
+func newProduct(name string, price int, company string) *Product {
+	p := Product{
+		name:    name,
+		price:   price,
+		company: company,
+	}
+	return &p
+}
+
+// member function of a struct
+
+func (p *Product) display(short bool) {
+	if short {
+		fmt.Println("Product:", p.name, "Price:", p.price)
+		return
+	}
+
+	fmt.Println("Product details:")
+	fmt.Println("Name:", p.name)
+	fmt.Println("Price:", p.price)
+	fmt.Println("Company:", p.company)
+}
+
+func (p *Product) buy() {
+	fmt.Println("Buying product:", p.name, "for price:", p.price)
+}
+
+func (p *Product) getDiscount() int {
+	discount := p.price * 20 / 100
+	fmt.Println("Discount for product", p.name, "is", discount)
+	return discount
+}
+
+func check_discount_and_buy(p SellableProduct) {
+	discount := p.getDiscount()
+	if discount > 30 {
+		fmt.Println("Discount is good, buying the product.")
+		p.buy()
+		return
+	} else {
+		fmt.Println("Discount is not good, not buying the product.")
+		return
+	}
+}
+
 func main() {
 
-	const availableStock = 50
+	new_p := newProduct("iPhone 15 Pro", 1000, "Apple Inc.")
+	new_p.display(true)
 
-	var productName string         // Declare a variable to hold the product name but no value is assigned
-	var productPrice int = 10000   // Declare a variable to hold the product price and assign a value
-	var companyName = "Apple Inc." // Declare a variable to hold the company name and assign a value but type is inferred
+	check_discount_and_buy(new_p)
 
-	category := "Electronics" // Declare a variable to hold the category and assign a value but type is inferred
+	// const availableStock = 50
 
-	fmt.Println("Product name is", productName, "and price is", productPrice, "and company name is", companyName)
-	fmt.Println("Category is", category)
+	// var productName string         // Declare a variable to hold the product name but no value is assigned
+	// var productPrice int = 10000   // Declare a variable to hold the product price and assign a value
+	// var companyName = "Apple Inc." // Declare a variable to hold the company name and assign a value but type is inferred
 
-	productName = "iPhone 15 Pro" // Assign a value to the product name variable
+	// category := "Electronics" // Declare a variable to hold the category and assign a value but type is inferred
 
-	loops_demo()
-	arrays_demo()
-	maps_demo()
+	// fmt.Println("Product name is", productName, "and price is", productPrice, "and company name is", companyName)
+	// fmt.Println("Category is", category)
 
-	x, y := check_odd_even(11)
+	// productName = "iPhone 15 Pro" // Assign a value to the product name variable
 
-	fmt.Println(x, y)
+	// loops_demo()
+	// arrays_demo()
+	// maps_demo()
 
-	demo_pointers()
+	// x, y := check_odd_even(11)
+
+	// fmt.Println(x, y)
+
+	// demo_pointers()
 }
 
 func loops_demo() {
